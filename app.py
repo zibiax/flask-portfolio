@@ -1,6 +1,9 @@
 from flask import Flask, render_template
+from flask import abort
 
 app = Flask(__name__)
+
+slug_to_project = {project["slug"]: project for project in projects}
 
 @app.route("/")
 def index():
@@ -38,3 +41,10 @@ projects = [
         "slug": "api-docs",
     },
 ]
+
+@app.route("/project/<string:slug>")
+def project(slug):
+    if slug not in slug_to_project:
+        abort(404)
+    return render_template(f"project_{slug}.html", project=slug_to_project[slug])
+

@@ -4,26 +4,12 @@ app = Flask(__name__)
 
 projects = [
     {
-        "name": "Habit tracking app with Python and MongoDB",
+        "name": "NES emulator in rust-lang",
         "thumb": "img/habit-tracking.png",
         "hero": "img/habit-tracking-hero.png",
-        "categories": ["python", "web"],
-        "slug": "habit-tracking",
-        "prod": "https://udemy.com",
-    },
-    {
-        "name": "Personal finance tracking app with React",
-        "thumb": "img/personal-finance.png",
-        "hero": "img/personal-finance.png",
-        "categories": ["react", "javascript"],
-        "slug": "personal-finance",
-    },
-    {
-        "name": "REST API Documentation with Postman and Swagger",
-        "thumb": "img/rest-api-docs.png",
-        "hero": "img/rest-api-docs.png",
-        "categories": ["writing"],
-        "slug": "api-docs",
+        "categories": ["rust", "low-level"],
+        "slug": "rust",
+        "prod": "https://nes.evenbom.se/"
     },
 ]
 slug_to_project = {project["slug"]: project for project in projects}

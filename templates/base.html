@@ -8,24 +8,92 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: {% if session['dark_mode'] %} #333; {% else %} #f5f5f5; {% endif %};
+            color: {% if session['dark_mode'] %} #fff; {% else %} #000; {% endif %};
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            background-color: #555;
+            padding: 10px;
+        }
+
+        .nav__link {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .nav__link:hover {
+            color: #ffcc00;
+        }
+
+        .nav__link--active {
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .dark-mode-btn {
+            cursor: pointer;
+            color: #fff;
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+    </style>
+
 </head>
 
 <body>
     <header class="header">
         <h1>Martin Evenbom</h1>
-    <nav class="nav">
-    <a href="{{ url_for('index') }}" class="nav__link {{ 'nav__link--active' if request.path == url_for('index') }}">
-        Projects
-    </a>
-    <a href="{{ url_for('about') }}" class="nav__link {{ 'nav__link--active' if request.path == url_for('about') }}">
-        About
-    </a>
-    <a href="{{ url_for('contact') }}" class="nav__link {{ 'nav__link--active' if request.path == url_for('contact') }}">
-        Contact
-    </a>
-    </nav>
-
+        <nav class="nav">
+            <div>
+                <a href="{{ url_for('index') }}" class="nav__link {{ 'nav__link--active' if request.path == url_for('index') }}">
+                    Projects
+                </a>
+                <a href="{{ url_for('about') }}" class="nav__link {{ 'nav__link--active' if request.path == url_for('about') }}">
+                    About
+                </a>
+                <a href="{{ url_for('contact') }}" class="nav__link {{ 'nav__link--active' if request.path == url_for('contact') }}">
+                    Contact
+                </a>
+            </div>
+            <button class="dark-mode-btn" onclick="toggleDarkMode()">Dark Mode</button>
+        </nav>
     </header>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            // Send an AJAX request to update the server-side session
+            fetch("{{ url_for('toggle_dark_mode') }}", {
+                method: "POST",
+                credentials: "include", // Include cookies in the request
+            });
+        }
+    </script>
 
     {% block content %}
     {% endblock %}

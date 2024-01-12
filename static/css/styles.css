@@ -58,23 +58,12 @@ body {
 }
 
 .contact__details {
-  /* 1ch is equivalent to the width of the 0 character at the current
-       font size. This allows to create a roughly one letter gap bewteen
-       the contact label and the associated contact detail */
-
   margin-left: 1ch;
 }
 
 .contact__link {
   color: #000;
   text-decoration: none;
-
-  /* We can modify the text decoration colour and thickness to
-       create a custom underline, but the text-decoration-thickness
-       property isn't currently supported on Chrome.
-       
-       Using box-shadow to simulate the underline gives us a
-       cross-browser solution. */
 
   box-shadow: 0 3px 0 0 #4cafda;
 }
@@ -148,9 +137,6 @@ body {
   letter-spacing: 0.075rem;
 }
 
-/* Adds an ::after pseudo-element to each category tag, except the last one.
-   This psuedo-element contains a pipe character (|), which acts as a seperator
-   between the tags. */
 
 .categories__tag:not(:last-of-type)::after {
   content: "|";

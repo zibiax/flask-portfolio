@@ -1,5 +1,4 @@
-from flask import Flask, render_template
-from flask import abort
+from flask import Flask, render_template, abort
 
 app = Flask(__name__)
 

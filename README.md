@@ -4,3 +4,4 @@
 
 Work in progress
 #### Requirements:
+`checkout requirements.txt`

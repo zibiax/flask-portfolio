@@ -1,6 +1,15 @@
-from flask import Flask, render_template, abort, session
+from flask import Flask, render_template, abort, sessions
+from flask_mongoengine import MongoEngine
+from flask_login import LoginManager
 
 app = Flask(__name__)
+app.config['MONGODB_SETTINGS'] = {
+        'db': 'Project',
+        'host': 'localhost'
+        }
+
+db = MongoEngine(app)
+login_manager = LoginManager(app)
 
 def read_input(input):
     with open(input, 'r') as f:
@@ -16,7 +25,7 @@ projects = [
         "hero": "img/nes.png",
         "categories": ["rust", "low-level"],
         "slug": "rust",
-        "prod": "https://nes.evenbom.se/"
+        "prod": "https://github.com/zibiax/rusty-nes/"
     },
 ]
 slug_to_project = {project["slug"]: project for project in projects}

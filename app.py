@@ -1,6 +1,7 @@
-from flask import Flask, render_template, abort, sessions
 from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
+from flask_admin import Admin
+from flask_admin.contrib.mongoengine import ModelView
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
@@ -17,45 +18,10 @@ def read_input(input):
 
 secret_key = read_input('secret_key.txt')
 app.secret_key = secret_key
+app.config['SECRET_KEY'] = secret_key
 
-projects = [
-    {
-        "name": "NES emulator in rust-lang",
-        "thumb": "img/nes.png",
-        "hero": "img/nes.png",
-        "categories": ["rust", "low-level"],
-        "slug": "rust",
-        "prod": "https://github.com/zibiax/rusty-nes/"
-    },
-]
-slug_to_project = {project["slug"]: project for project in projects}
+admin = Admin(app, name='Admin', template_mode='bootstrap4')
 
-@app.route('/toggle_dark_mode', methods=['POST'])
-def toggle_dark_mode():
-    session['dark_mode'] = not session.get('dark_mode', False)
-    return '', 204
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template("404.html"), 404
-
-@app.route("/")
-def index():
-    return render_template("index.html", projects=projects)
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
-
-@app.route("/project/<string:slug>")
-def project(slug):
-    if slug not in slug_to_project:
-        abort(404)
-    return render_template(f"project_{slug}.html", project=slug_to_project[slug])
 
 if __name__ == "__main__":
     app.run(debug=False)

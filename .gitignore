@@ -1,2 +1,2 @@
 secret_key.txt
-/data/*
+data/**

@@ -1,16 +1,17 @@
-from flask_mongoengine import MongoEngine
-from flask_login import LoginManager
-from flask_admin import Admin
-from flask_admin.contrib.mongoengine import ModelView
+from flask import Flask
+from flask_login import LoginManager, login_manager
+from admin import admin
+import os
 
 app = Flask(__name__)
+
+data_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', 'db')
+
 app.config['MONGODB_SETTINGS'] = {
         'db': 'Project',
-        'host': 'localhost'
+        'host': f'mongodb://localhost:27017/Project'
         }
 
-db = MongoEngine(app)
-login_manager = LoginManager(app)
 
 def read_input(input):
     with open(input, 'r') as f:
@@ -20,8 +21,22 @@ secret_key = read_input('secret_key.txt')
 app.secret_key = secret_key
 app.config['SECRET_KEY'] = secret_key
 
-admin = Admin(app, name='Admin', template_mode='bootstrap4')
+from models import db, Project, User
 
+
+db.init_app(app)
+
+login_manager = LoginManager(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.objects(id=user_id).first()
+
+login_manager.init_app(app)
+
+from views import ProjectView
+
+admin.add_view(ProjectView(Project))
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

@@ -1,17 +1,17 @@
 from flask import Flask
 from flask_login import LoginManager, login_manager
 from admin import admin
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
 
 data_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data', 'db')
 
-app.config['MONGODB_SETTINGS'] = {
-        'db': 'Project',
-        'host': f'mongodb://localhost:27017/Project'
-        }
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(data_dir, 'app.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 
 def read_input(input):
     with open(input, 'r') as f:
@@ -23,14 +23,11 @@ app.config['SECRET_KEY'] = secret_key
 
 from models import db, Project, User
 
-
-db.init_app(app)
-
 login_manager = LoginManager(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.objects(id=user_id).first()
+    return User.query.get(user_id)
 
 login_manager.init_app(app)
 

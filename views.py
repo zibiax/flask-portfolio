@@ -1,13 +1,51 @@
-from flask_admin.contrib.mongoengine import ModelView
+from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
+from flask_admin.fields import ImageUploadField
 from flask_login import current_user, login_required, login_user, logout_user
 from flask import redirect, render_template, abort, session, request, url_for, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 from models import User, Project
-from app import app
+from app import app, db
 from admin import admin
 from flask_admin import Admin
 from forms import RegistrationForm
+import os
+from werkzeug.utils import secure_filename
+from flask_migrate import Migrate
+
+migrate = Migrate(app, db)
+
+
+app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to store uploaded files
+
+# Function to handle file uploads
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return redirect(request.url)
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return redirect(request.url)
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        new_project = Project(name=request.form['name'],
+                              description=request.form['description'],
+                              image_filename=filename)
+        db.session.add(new_project)
+        db.session.commit()
+
+        return 'File uploaded successfully'
+
+    return 'Invalid file'
+
 
 class MyAdminIndexView(AdminIndexView):
     def is_accessible(self):
@@ -21,9 +59,12 @@ class ProjectView(ModelView):
     create_modal = True
     edit_modal = True
     column_exclude_list = ['created_at']
-    from_override = {
-            'image': FileUploadField
-            }
+    create_template = 'admin/edit.html'
+    edit_template = 'admin/edit.html'
+
+    from_extra_fields = {
+        'image': ImageUploadField('Image', base_path='uploads/')
+        }
 
     def is_accessible(self):
         return current_user.is_authenticated
@@ -32,10 +73,13 @@ class ProjectView(ModelView):
         flash('Login required.', 'warning')
         return redirect(url_for('login'))
 
+    def __init__(self, model, session=None, **kwargs):
+        super(ProjectView, self).__init__(model, session, **kwargs)
+
 
 admin = Admin(app, index_view=MyAdminIndexView(name='Dashboard', endpoint='admin'))
 
-admin.add_view(ProjectView(Project))
+admin.add_view(ProjectView(Project, db.session))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,11 +88,12 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        hashed_password = generate_password_hash(password, method='sha256')
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         # Create a new user and save to the database
         new_user = User(username=username, password=hashed_password)
-        new_user.save()
+        db.session.add(new_user)
+        db.session.commit()
 
         flash('Account created successfully. You can now log in.', 'success')
         return redirect(url_for('login'))
@@ -65,7 +110,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        user = User.objects(username=username).first()
+        user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
             flash('Login successful', 'success')
@@ -91,7 +136,7 @@ def page_not_found(error):
 
 @app.route("/")
 def index():
-    projects = Project.objects()
+    projects = Project.query.all()
     return render_template("index.html", projects=projects)
 
 @app.route("/about")

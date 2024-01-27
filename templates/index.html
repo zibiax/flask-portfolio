@@ -3,7 +3,7 @@
     <main class="main main--home">
         <section class="projects">
             {% for project in projects %}
-                    <a class="u-bare-link" href="{{ url_for('project', slug=project ['slug']) }}">
+                    <a class="u-bare-link" href="{{ url_for('project.export', slug=project ['slug'], export_type='pdf') }}">
                     <article class="project-card">
                         <img
                             class="project-card__image"

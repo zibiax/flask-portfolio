@@ -1,6 +1,6 @@
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
-from flask_admin.fields import ImageUploadField
+from flask_admin.form.upload import ImageUploadField
 from flask_login import current_user, login_required, login_user, logout_user
 from flask import redirect, render_template, abort, session, request, url_for, flash
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -16,7 +16,7 @@ from flask_migrate import Migrate
 migrate = Migrate(app, db)
 
 
-app.config['UPLOAD_FOLDER'] = 'uploads'  # Folder to store uploaded files
+app.config['UPLOAD_FOLDER'] = 'static/uploads/'  # Folder to store uploaded files
 
 # Function to handle file uploads
 def allowed_file(filename):
@@ -62,8 +62,11 @@ class ProjectView(ModelView):
     create_template = 'admin/edit.html'
     edit_template = 'admin/edit.html'
 
-    from_extra_fields = {
-        'image': ImageUploadField('Image', base_path='uploads/')
+    form_extra_fields = {
+        'image': ImageUploadField('Image',
+                                  base_path=lambda: os.path.join(os.path.dirname(__file__), 'static/uploads'),
+                                  endpoint='static',
+                                  url_relative_path='uploads/')
         }
 
     def is_accessible(self):
@@ -80,6 +83,11 @@ class ProjectView(ModelView):
 admin = Admin(app, index_view=MyAdminIndexView(name='Dashboard', endpoint='admin'))
 
 admin.add_view(ProjectView(Project, db.session))
+
+@app.route('/project/<int:project_id>')
+def project_detail(project_id):
+    project = Project.query.get_or_404(project_id)
+    return render_template('project_detail.html', project=project)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

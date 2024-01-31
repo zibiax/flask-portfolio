@@ -80,10 +80,10 @@ class ProjectView(ModelView):
         super(ProjectView, self).__init__(model, session, **kwargs)
 
 
-admin = Admin(app, index_view=MyAdminIndexView(name='Dashboard', endpoint='admin'))
+adminview = Admin(app, index_view=MyAdminIndexView(name='Dashboard', endpoint='admin'))
 
-admin.add_view(ProjectView(Project, db.session))
-admin.add_view(ProjectView(User, db.session))
+adminview.add_view(ProjectView(Project, db.session))
+adminview.add_view(ProjectView(User, db.session))
 
 @app.route('/project/<int:project_id>')
 def project_detail(project_id):

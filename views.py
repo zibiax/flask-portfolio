@@ -20,7 +20,15 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/'  # Folder to store uploaded file
 
 # Function to handle file uploads
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif', 'svg',}
+
+@app.route('/download_project_file')
+def download_project_file():
+    file_path = 'static/cv/CV.pdf'
+
+    filename = 'CV.pdf'
+
+    return send_file(file_path, as_attachment=True, download_name=filename)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -66,7 +74,9 @@ class ProjectView(ModelView):
         'image': ImageUploadField('Image',
                                   base_path=lambda: os.path.join(os.path.dirname(__file__), 'static/uploads'),
                                   endpoint='static',
-                                  url_relative_path='uploads/')
+                                  url_relative_path='uploads/',
+                                  allowed_extensions=('png', 'jpg', 'jpeg', 'gif', 'svg'),
+                                  )
         }
 
     def is_accessible(self):

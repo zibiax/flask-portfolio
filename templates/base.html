@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyL/Kvxdp+3Ia4z5PktQ5t7ByqI5Gxww/u" crossorigin="anonymous">
     <style>
         body {
             font-family: 'Lato', sans-serif;
@@ -103,6 +103,17 @@
 
     {% block content %}
     {% endblock %}
+    
+    <footer class="footer py-3 bg-dark text-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" align="center">
+                <p class="mb-0">&copy; 2024 Martin Evenbom's Portfolio. All rights reserved.</p>
+                <p class="mb-0">Powered By Flask <img src="{{ url_for('static', filename='img/flask.svg') }}" alt="Flask Icon" width="20" height="20"></p>
+            </div>
+        </div>
+    </div>
+    </footer>
 </body>
 
 </html>

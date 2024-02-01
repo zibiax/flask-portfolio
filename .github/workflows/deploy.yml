@@ -24,6 +24,6 @@ jobs:
 
       - name: Deploy to Raspberry Pi
         run: |
-          sshpass -p ${{ secrets.RPI_PASSWORD }} ssh pi@your-rpi-ip "cd /path/to/your/app && git pull && ./deploy.sh"
+          sshpass -p ${{ secrets.RPI_PASSWORD }} ssh pi@secrets.your_rpi_ip "cd ~/flask-portfolio && git pull && ./deploy.sh"
         env:
           SSHPASS: ${{ secrets.SSHPASS }}

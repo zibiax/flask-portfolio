@@ -21,7 +21,7 @@ secret_key = read_input('secret_key.txt')
 app.secret_key = secret_key
 app.config['SECRET_KEY'] = secret_key
 
-from models import db, Project, User
+from models import Project, User
 
 login_manager = LoginManager(app)
 

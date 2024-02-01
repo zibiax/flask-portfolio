@@ -1,0 +1,29 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-docker@v2
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t zibax/flask_portfolio:latest .
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push your-registry/your-image:latest
+
+      - name: Deploy to Raspberry Pi
+        run: |
+          sshpass -p ${{ secrets.RPI_PASSWORD }} ssh pi@your-rpi-ip "cd /path/to/your/app && git pull && ./deploy.sh"
+        env:
+          SSHPASS: ${{ secrets.SSHPASS }}

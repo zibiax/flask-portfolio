@@ -1,0 +1,6 @@
+version: '3'
+services:
+  your-service:
+    image: your-registry/your-image:latest
+    ports:
+      - "80:80"

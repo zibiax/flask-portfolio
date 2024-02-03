@@ -13,19 +13,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v1
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '14'
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t zibax/flask_portfolio:latest .
-          echo '{"auths":{"https://index.docker.io/v1/":{"auth":"'$(echo -n ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} | base64 -w 0)'"}}}' > $HOME/.docker/config.json
-          docker push zibax/flask_portfolio:latest
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Deploy to Raspberry Pi
-        run: |
-          sshpass -p ${{ secrets.RPI_PASSWORD }} ssh pi@secrets.your_rpi_ip "cd ~/flask-portfolio && git pull && ./deploy.sh"
-        env:
-          SSHPASS: ${{ secrets.SSHPASS }}
+          chmod +x ./build_and_push.sh
+          ./build_and_push.sh

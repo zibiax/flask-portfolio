@@ -17,7 +17,7 @@ RUN conda env create -f environment.yml
 SHELL ["conda", "run", "-n", "flask-portfolio", "/bin/bash", "-c"]
 
 # Make port 80 the port used
-EXPOSE 80
+EXPOSE 5000
 
 # Run the Django development server
 CMD ["conda", "run", "-n", "flask-portfolio", "flask", "run", "--host=0.0.0.0"]

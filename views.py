@@ -99,7 +99,7 @@ adminview.add_view(ProjectView(User, db.session))
 def project_detail(project_id):
     project = Project.query.get_or_404(project_id)
     return render_template('project_detail.html', project=project)
-
+'''
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -118,7 +118,7 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html', form=form)
-
+'''
 @login_required
 @app.route('/admin')
 def admin():

@@ -6,8 +6,14 @@ IMAGE_NAME="flask_portfolio"
 TAG="latest"
 CONTAINER_NAME="flask_portfolio"
 
+# Create a Docker configuration file with credentials
+echo "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"$(echo -n $DOCKER_USERNAME:$DOCKER_PASSWORD | base64)\"}}}" > ~/.docker/config.json
+
 # Docker login
-docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#docker login --username $DOCKER_USERNAME --password-stdin < ~/.docker/config.json
+
+# Remove password-file
+rm ~/.docker/config.json
 
 # Stop and remove the existing container
 docker stop $CONTAINER_NAME
@@ -20,7 +26,7 @@ docker build -t zibax/$IMAGE_NAME:$TAG .
 docker tag $IMAGE_NAME:$TAG zibax/$IMAGE_NAME:$TAG
 
 # Push to Docker.io
-sudo docker push zibax/flask_portfolio:latest
+#docker push zibax/flask_portfolio:latest
 
 # Run the new container
 docker run -d --name $CONTAINER_NAME -p 5000:5000 zibax/$IMAGE_NAME:$TAG

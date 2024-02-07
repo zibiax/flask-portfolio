@@ -22,9 +22,6 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/'  # Folder to store uploaded file
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif', 'svg',}
 
-@app.route('/cookie_preferences', methods=['POST'])
-def cookie_preferences():
-    return render_template('cookie_preferences.html')
 
 @app.route('/download_project_file')
 def download_project_file():

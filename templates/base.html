@@ -91,7 +91,6 @@
             <button class="dark-mode-btn" onclick="toggleDarkMode()">Dark Mode</button>
         </nav>
     </header>
-{% include 'cookie_banner.html' %}
 
 {% block content %}{% endblock %}
     <script>
@@ -103,52 +102,12 @@
                 credentials: "include", // Include cookies in the request
             });
         }
-    window.onload = function() {
-        var banner = document.getElementById('cookie-banner');
-        if (!getCookie('cookie_preferences_set')) {
-            banner.style.display = 'block';
-        }
-        document.getElementById('accept-cookies').addEventListener('click', function() {
-            setCookie('cookie_preferences_set', 'true', 365);
-            banner.style.display = 'none';
-        });
-        document.getElementById('customize-cookies').addEventListener('click', function() {
-            // Redirect to the cookie preferences page or show a modal for customization
-            // Example: window.location.href = '/cookie-preferences';
-            // or show a modal
-        });
-    };
-
-    function setCookie(name, value, days) {
-        var expires = '';
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = '; expires=' + date.toUTCString();
-        }
-        document.cookie = name + '=' + (value || '') + expires + '; path=/';
-    }
-
-    function getCookie(name) {
-        var nameEQ = name + '=';
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i];
-            while (cookie.charAt(0) === ' ') {
-                cookie = cookie.substring(1, cookie.length);
-            }
-            if (cookie.indexOf(nameEQ) === 0) {
-                return cookie.substring(nameEQ.length, cookie.length);
-            }
-        }
-        return null;
-    }
-    </script>
+       </script>
 
     {% block content %}
     {% endblock %}
     
-    <footer class="footer py-3 bg-dark text-light">
+    <footer class="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-6" align="center">

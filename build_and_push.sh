@@ -20,7 +20,7 @@ docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 
 # Build Docker image
-docker build -t zibax/$IMAGE_NAME:$TAG .
+DOCKER_BUILDKIT=1 docker build -t zibax/$IMAGE_NAME:$TAG .
 
 # Tag the image
 docker tag $IMAGE_NAME:$TAG zibax/$IMAGE_NAME:$TAG

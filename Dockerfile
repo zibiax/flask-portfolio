@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy the local directory contents into the container at /app
 COPY . /app
 
-# Remove SSH server (example for Debian/Ubuntu)
-RUN apt-get remove -y openssh-server
-
 # Install dependencies
 RUN conda env create -f environment.yml
 

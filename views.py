@@ -2,7 +2,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
 from flask_admin.form.upload import ImageUploadField
 from flask_login import current_user, login_required, login_user, logout_user
-from flask import send_file, redirect, render_template, abort, session, request, url_for, flash
+from flask import send_file, redirect, render_template, abort, session, request, url_for, flash, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 from models import User, Project
 from app import app, db
@@ -21,6 +21,10 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads/'  # Folder to store uploaded file
 # Function to handle file uploads
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif', 'svg',}
+
+@app.route('/cookie_preferences', methods=['POST'])
+def cookie_preferences():
+    return render_template('cookie_preferences.html')
 
 @app.route('/download_project_file')
 def download_project_file():

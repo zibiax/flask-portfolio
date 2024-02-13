@@ -98,7 +98,7 @@ adminview.add_view(ProjectView(User, db.session))
 
 @app.route('/robots.txt')
 def robots():
-    return send_from_directory(app.static_folder, 'robots.txt')
+    return send_file('robots.txt')
 
 @app.route('/project/<int:project_id>')
 def project_detail(project_id):

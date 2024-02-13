@@ -21,6 +21,7 @@ docker rm $CONTAINER_NAME
 
 # Build Docker image
 DOCKER_BUILDKIT=1 docker build -t zibax/$IMAGE_NAME:$TAG .
+# docker build --no-cache -t zibax/$IMAGE_NAME:$TAG .
 
 # Tag the image
 docker tag $IMAGE_NAME:$TAG zibax/$IMAGE_NAME:$TAG

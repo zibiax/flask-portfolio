@@ -2,7 +2,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
 from flask_admin.form.upload import ImageUploadField
 from flask_login import current_user, login_required, login_user, logout_user
-from flask import send_file, redirect, render_template, abort, session, request, url_for, flash, make_response
+from flask import send_file, redirect, render_template, abort, send_from_directory, session, request, url_for, flash, make_response
 from werkzeug.security import check_password_hash, generate_password_hash
 from models import User, Project
 from app import app, db
@@ -95,6 +95,10 @@ adminview = Admin(app, index_view=MyAdminIndexView(name='Dashboard', endpoint='a
 
 adminview.add_view(ProjectView(Project, db.session))
 adminview.add_view(ProjectView(User, db.session))
+
+@app.route('/robots.txt')
+def robots():
+    return send_from_directory(app.static_folder, 'robots.txt')
 
 @app.route('/project/<int:project_id>')
 def project_detail(project_id):

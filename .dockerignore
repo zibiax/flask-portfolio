@@ -2,3 +2,5 @@
 __pycache__
 docker_credentials.txt
 secret_key.txt
+build_and_push.sh
+deploy.sh

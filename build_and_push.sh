@@ -7,17 +7,23 @@ TAG="latest"
 CONTAINER_NAME="flask_portfolio"
 
 # Create a Docker configuration file with credentials
-echo "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"$(echo -n $DOCKER_USERNAME:$DOCKER_PASSWORD | base64)\"}}}" > ~/.docker/config.json
+#echo "{\"auths\":{\"https://index.docker.io/v2/\":{\"auth\":\"$(echo -n $DOCKER_USERNAME:$DOCKER_PASSWORD | base64)\"}}}" > ~/.docker/config.json
 
 # Docker login
 #docker login --username $DOCKER_USERNAME --password-stdin < ~/.docker/config.json
 
 # Remove password-file
-rm ~/.docker/config.json
+#rm ~/.docker/config.json
 
-# Stop and remove the existing container
-docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+# Check if the container exists and stop it if it does
+if docker ps -a --format '{{.Names}}' | grep -Eq "^$CONTAINER_NAME$"; then
+    docker stop $CONTAINER_NAME
+fi
+
+# Check if the container exists and remove it if it does
+if docker ps -a --format '{{.Names}}' | grep -Eq "^$CONTAINER_NAME$"; then
+    docker rm $CONTAINER_NAME
+fi
 
 # Build Docker image
 DOCKER_BUILDKIT=1 docker build -t zibax/$IMAGE_NAME:$TAG .

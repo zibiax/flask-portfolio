@@ -2,6 +2,6 @@
 
 <br>
 
-Work in progress
+#### This is my personal portfolio website. Go to the [site](https://evenbom.se/)
 #### Requirements:
-`checkout environment.yml`
+`environment.yml`

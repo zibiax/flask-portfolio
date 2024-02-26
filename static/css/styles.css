@@ -51,6 +51,13 @@ body {
   margin: 0 auto;
 }
 
+.project_description:link {
+    color: #39FF14;
+}
+
+.project_description:visited {
+    color: #50C878
+
 .main--about {
   flex-direction: column;
   max-width: 500px;

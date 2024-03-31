@@ -2,6 +2,5 @@ secret_key.txt
 data/**
 __pycache__/**
 static/uploads/**
-migrations/**
 static/uploads/**
 docker_credentials.txt

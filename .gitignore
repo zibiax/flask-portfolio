@@ -1,7 +1,5 @@
 secret_key.txt
 __pycache__/**
-static/uploads/**
-static/uploads/**
 docker_credentials.txt
 environment1.yml
 data/**

@@ -6,14 +6,13 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      build_arch:
+      choice:
+        type: choice
         description: 'Choose architecture to build'
-        required: true
-        default: 'both'
         options:
-          x86: 'x86'
-          arm: 'arm'
-          both: 'Both'
+        - arm
+        - x86
+        - both
 
 jobs:
   deploy:

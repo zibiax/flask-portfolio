@@ -46,8 +46,9 @@ jobs:
           fi
 
       - name: Tag Docker Image
-        run: docker tag flask_portfolio flask_portfolio:latest
+        run: |
+          docker tag flask_portfolio:latest ${{ secrets.DOCKER_USERNAME }}/flask_portfolio:latest
 
       - name: Push Docker Image
         run: |
-          docker push flask_portfolio:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/flask_portfolio:latest

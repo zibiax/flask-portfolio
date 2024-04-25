@@ -35,18 +35,16 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             if [ "${{ github.event.inputs.choice }}" == "x86" ]; then
-              docker buildx build --platform linux/amd64 -t flask_portfolio:latest .
+              docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_USERNAME}}/flask_portfolio:latest .
             elif [ "${{ github.event.inputs.choice }}" == "arm" ]; then
-              docker buildx build --platform linux/arm64 -t flask_portfolio:latest .
+              docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKER_USERNAME}}/flask_portfolio:latest .
             else
-              docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest .
+              docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME}}/flask_portfolio:latest .
             fi
           else
-            docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest .
+            docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKER_USERNAME}}/flask_portfolio:latest .
           fi
-      - name: Tag Docker Image
-        run: |
-          docker tag flask_portfolio:latest ${{ secrets.DOCKER_USERNAME }}/flask_portfolio:latest
+
       - name: Push Docker Image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/flask_portfolio:latest

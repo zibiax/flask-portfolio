@@ -35,18 +35,18 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             if [ "${{ github.event.inputs.build_arch }}" == "x86" ]; then
-              docker buildx build --platform linux/amd64 -t flask_portfolio:latest . | tee build.log
+              docker buildx build --platform linux/amd64 -t flask_portfolio .
             elif [ "${{ github.event.inputs.build_arch }}" == "arm" ]; then
-              docker buildx build --platform linux/arm64 -t flask_portfolio:latest . | tee build.log
+              docker buildx build --platform linux/arm64 -t flask_portfolio .
             else
-              docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest . | tee build.log
+              docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio .
             fi
           else
-            docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest . | tee build.log
+            docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio .
           fi
 
-      - name: Show Build Log
-        run: cat build.log
+      - name: Tag Docker Image
+        run: docker tag flask_portfolio flask_portfolio:latest
 
       - name: Push Docker Image
         run: |

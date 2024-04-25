@@ -14,6 +14,10 @@ on:
         - x86
         - both
 
+env:
+  USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -29,8 +33,8 @@ jobs:
         name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+          username: ${{ env.USERNAME }}
+          password: ${{ env.PASSWORD }}
           logout: true
 
 

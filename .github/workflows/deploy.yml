@@ -14,7 +14,6 @@ on:
         - x86
         - both
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -36,13 +35,13 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             if [ "${{ github.event.inputs.build_arch }}" == "x86" ]; then
-              docker buildx build --platform linux/amd64 -t your-image-name .
+              docker buildx build --platform linux/amd64 -t flask_portfolio:latest .
             elif [ "${{ github.event.inputs.build_arch }}" == "arm" ]; then
-              docker buildx build --platform linux/arm64 -t your-image-name .
+              docker buildx build --platform linux/arm64 -t flask_portfolio:latest .
             else
-              docker buildx build --platform linux/amd64,linux/arm64 -t your-image-name .
+              docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest .
             fi
           else
-            docker buildx build --platform linux/amd64,linux/arm64 -t your-image-name .
+            docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest .
           fi
-          docker push your-image-name
+          docker push flask_portfolio:latest

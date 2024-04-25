@@ -30,20 +30,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-  
+
       - name: Build Docker Image
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             if [ "${{ github.event.inputs.build_arch }}" == "x86" ]; then
-              docker buildx build --platform linux/amd64 -t flask_portfolio:latest .
+              docker buildx build --platform linux/amd64 -t flask_portfolio:latest . | tee build.log
             elif [ "${{ github.event.inputs.build_arch }}" == "arm" ]; then
-              docker buildx build --platform linux/arm64 -t flask_portfolio:latest .
+              docker buildx build --platform linux/arm64 -t flask_portfolio:latest . | tee build.log
             else
-              docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest .
+              docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest . | tee build.log
             fi
           else
-            docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest .
+            docker buildx build --platform linux/amd64,linux/arm64 -t flask_portfolio:latest . | tee build.log
           fi
+
+      - name: Show Build Log
+        run: cat build.log
 
       - name: Push Docker Image
         run: |

@@ -21,7 +21,7 @@ def read_input(input):
         return f.readline().rstrip()
 
 
-secret_key = read_input('secret_key.txt')
+secret_key = os.getenv('SECRET_KEY')
 app.secret_key = secret_key
 app.config['SECRET_KEY'] = secret_key
 

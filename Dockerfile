@@ -10,6 +10,9 @@ COPY . /app
 # Install dependencies
 RUN conda env create -f environment.yml
 
+# Set environment variable
+ENV SECRET_KEY=${SECRET_KEY}
+
 # Activate the conda environment
 SHELL ["conda", "run", "-n", "flask-portfolio", "/bin/bash", "-c"]
 

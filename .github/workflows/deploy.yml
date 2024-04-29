@@ -20,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      SECRET_PASSWORD: ${{ secrets.SECRET_PASSWORD }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

@@ -2,13 +2,12 @@ from flask_admin.contrib.sqla import ModelView
 from flask_admin import AdminIndexView
 from flask_admin.form.upload import ImageUploadField
 from flask_login import current_user, login_required, login_user, logout_user
-from flask import send_file, redirect, render_template, abort, send_from_directory, session, request, url_for, flash, make_response
-from werkzeug.security import check_password_hash, generate_password_hash
+from flask import send_file, redirect, render_template, session, request, url_for, flash
+from werkzeug.security import check_password_hash
 from models import User, Project
 from app import app, db
 from admin import admin
 from flask_admin import Admin
-from forms import RegistrationForm
 import os
 from werkzeug.utils import secure_filename
 from flask_migrate import Migrate

@@ -16,7 +16,7 @@ ENV SECRET_KEY=${SECRET_KEY}
 # Activate the conda environment
 SHELL ["conda", "run", "-n", "flask-portfolio", "/bin/bash", "-c"]
 
-# Make port 80 the port used
+# Make port 5000 the port used
 EXPOSE 5000
 
 # Run the Django development server
